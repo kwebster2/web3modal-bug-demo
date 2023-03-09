@@ -1,10 +1,7 @@
 import React, { useMemo } from 'react';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import {
-  EthereumClient,
-  modalConnectors,
-  walletConnectProvider,
-} from '@web3modal/ethereum';
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
+
 import { useWeb3ModalTheme, Web3Modal } from '@web3modal/react';
 import { goerli, polygonMumbai } from 'wagmi/chains';
 
@@ -24,11 +21,11 @@ const TokenLanding = () => {
   const [wagmiClient, ethereumClient] = useMemo(() => {
     let chains = [goerli, polygonMumbai];
     const { provider } = configureChains(chains, [
-      walletConnectProvider({ projectId: wcProjectId }),
+      w3mProvider({ projectId: wcProjectId }),
     ]);
     const wagmiClient = createClient({
       autoConnect: true,
-      connectors: modalConnectors({ appName: 'demo', chains }),
+      connectors: w3mConnectors({ chains, projectId: wcProjectId, version: 1 }),
       provider,
     });
   
